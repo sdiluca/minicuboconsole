@@ -1,0 +1,38 @@
+<p [hidden]="!connected" class="wifiConnected title">Connesso a {{connectedNetwork?.SSID}}</p>
+<p [hidden]="connected" class="wifiNotConnected title">Non Connesso</p>
+<p [hidden]="!saved" class="wifiConnected title">Configurazione salvata, il dispositivo si riavvia.</p>
+<p [hidden]="!errorSaving" class="wifiNotConnected title">Errore salvataggio configurazione wifi</p>
+<p class="title">{{title}}</p>
+<div class="wifitable">
+<div *ngFor="let wifi of networks|sortByStrenght" class="wifirow">
+  <div class="wificolumn">
+    <div class="networkName">{{wifi.SSID}}</div>
+  </div>
+  <div [ngSwitch]="wifi.signalStrength" class="wificolumn">
+    <div *ngSwitchCase="wifi.signalStrenghEnum.UNUSABLE"  class="signal-icon">
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+    </div>
+    <div *ngSwitchCase="wifi.signalStrenghEnum.WEAK"  class="signal-icon weak">
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+    </div>
+    <div *ngSwitchCase="wifi.signalStrenghEnum.MEDIUM"  class="signal-icon medium">
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+    </div>
+    <div *ngSwitchCase="wifi.signalStrenghEnum.STRONG"  class="signal-icon strong">
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+      <div class="signal-bar"></div>
+    </div>
+  </div>
+  <div class="wificolumn">
+    <button (click)="selectedNetwork=wifi.SSID;selectedBSSID=wifi.BSSID">Specifica Password</button>
+  </div>
+</div>
+</div>
+<app-wifinetwork-password #wifi *ngIf="selectedNetwork!=''" [selectedNetwork]="selectedNetwork" (saveEvent)="onRetrievePassword($event)"></app-wifinetwork-password>
